@@ -1,0 +1,28 @@
+sqlite-asiaa
+============
+
+sqlite lähtee toimimaan kun hommaa tiedoston sqllite3.exe tai vastaava Macilla tai Windowsille:
+https://www.sqlite.org/download.html
+
+Oli tässä paketissa:
+sqlite-tools-win32-x86-3270100.zip
+
+// luodaan tietokanta mille asialle halutaan - siitä tulee tiedosto kyseiseen hakemistoon
+sqlite3 muistipeli.db
+
+// tietokantataulun luonti ja katselu
+create table highscore(score int, nickname text);
+.schema
+
+.schema komento näyttää tietokannan taulut, hieman sama kuin desc table mysql/mariadb:ssä
+
+// tiedon syöttäminen tietokantaan rivi-riviltä
+insert into highscore(score, nickname) values(4, "Jukka");
+
+// listaa arvot
+select * from highscore;
+
+// sqlitestä poistuminen niin, että arvot tallennetaan
+.quit
+
+Nyt samassa hakemistossa on muistipeli.db
