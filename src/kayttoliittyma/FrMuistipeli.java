@@ -23,6 +23,8 @@ import liiketoiminta.Pelaaja;
  * 
  */
 
+
+
 public class FrMuistipeli extends JFrame implements ActionListener {
 
 	private int valinnat = 0;
