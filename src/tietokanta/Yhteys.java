@@ -12,7 +12,7 @@ public class Yhteys {
 			c = DriverManager.getConnection("jdbc:sqlite:highscore.db");
 			System.out.println("SQLite DB connected");
 		} catch(Exception ex) {
-			
+			ex.printStackTrace();
 		}
 	}
 	
