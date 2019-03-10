@@ -1,6 +1,9 @@
 package tietokanta;
 
 import java.sql.*;
+import java.util.List;
+
+import model.Pelaaja;
 
 public class Tietokanta {
 	
@@ -8,7 +11,7 @@ public class Tietokanta {
 		
 	}
 	public List<Pelaaja> listaaPisteet() {
-		
+		return null;
 	}
 
 	public static void main(String[] args) {
