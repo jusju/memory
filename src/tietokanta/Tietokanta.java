@@ -2,7 +2,14 @@ package tietokanta;
 
 import java.sql.*;
 
-public class Yhteys {
+public class Tietokanta {
+	
+	public void talleta(String nickname, int score) {
+		
+	}
+	public List<Pelaaja> listaaPisteet() {
+		
+	}
 
 	public static void main(String[] args) {
 		Connection c = null;
@@ -17,7 +24,7 @@ public class Yhteys {
 			while (rs.next()) {
 				int score = rs.getInt("score");
 				String nickname = rs.getString("nickname");
-				System.out.println(score);
+				System.out.print(score + " ");
 				System.out.println(nickname);
 			}
 
