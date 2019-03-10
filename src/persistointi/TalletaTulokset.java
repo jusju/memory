@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 import javax.lang.model.type.PrimitiveType;
 
-import liiketoiminta.Pelaaja;
+import model.Pelaaja;
 
 public class TalletaTulokset {
 
@@ -24,7 +24,7 @@ public class TalletaTulokset {
 					String rivi = scan.nextLine();
 					String[] solut = new String[2];
 					solut = rivi.split(",");
-					pelaaja.setNimi(solut[0]);
+					pelaaja.setNickname(solut[0]);
 					pelaaja.setPisteet(Integer.parseInt(solut[1]));
 					tulokset.add(pelaaja);
 				}
@@ -37,7 +37,7 @@ public class TalletaTulokset {
 		public void talletaTulos(Pelaaja pelaaja) {
 			try {
 				PrintWriter out = new PrintWriter(new FileWriter("db/tulokset.csv", true));
-				out.print(pelaaja.getNimi() + ";" + pelaaja.getPisteet()+ "\n");
+				out.print(pelaaja.getNickname() + ";" + pelaaja.getPisteet()+ "\n");
 				out.close();
 			} catch (IOException e) {
 				e.printStackTrace();
