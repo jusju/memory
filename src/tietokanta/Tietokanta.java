@@ -6,6 +6,26 @@ import java.util.List;
 import model.Pelaaja;
 
 public class Tietokanta {
+	private Connection connection = null;
+	
+	public void luoYhteys() {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			connection = DriverManager.getConnection("jdbc:sqlite:highscore.db");
+			System.out.println("SQLite DB connected");
+			Statement stmt = connection.createStatement();
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void suljeYhteys() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void talleta(String nickname, int score) {
 		
