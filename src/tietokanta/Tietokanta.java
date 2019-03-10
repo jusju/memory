@@ -45,7 +45,7 @@ public class Tietokanta {
 		luoYhteys();
 		List<Pelaaja> tulokset = new ArrayList<Pelaaja>();
 		try {
-			String sql = "SELECT * FROM highscore";
+			String sql = "SELECT * FROM highscore ORDER BY score DESC";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				int score = rs.getInt("score");
