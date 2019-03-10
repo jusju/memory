@@ -11,7 +11,7 @@ import javax.swing.*;
 
 import persistointi.TalletaTulokset;
 
-import liiketoiminta.Pelaaja;
+import model.Pelaaja;
 
 /**
  * Muistipeli. Sis‰lt‰‰ 18 erilaista korttiparia, jotka luovat 36:n ruudun 6x6
@@ -210,7 +210,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 					JOptionPane.QUESTION_MESSAGE, null, null, "");
 
 			Pelaaja pelaaja = new Pelaaja();
-			pelaaja.setNimi(nimi);
+			pelaaja.setNickname(nimi);
 			pelaaja.setPisteet(pisteet);
 			TalletaTulokset tulokset = new TalletaTulokset();
 			tulokset.talletaTulos(pelaaja);
