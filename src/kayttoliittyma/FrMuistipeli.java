@@ -23,13 +23,12 @@ import model.Pelaaja;
  * 
  */
 
-
-
 public class FrMuistipeli extends JFrame implements ActionListener {
 
 	private int valinnat = 0;
 	private int pisteet = 0;
 	private int oikeatValinnat = 0;
+	public static boolean dgNaytetty = false;
 
 	private ArrayList<JButton> kortit = new ArrayList<JButton>();
 	private ArrayList<ImageIcon> hedelmat = new ArrayList<ImageIcon>();
@@ -39,7 +38,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 	private JButton btPoistuPelista = new JButton("Poistu pelistä");
 	private JButton btEkaValittuKortti = null;
 	private JButton btTokaValittuKortti = null;
-	private JButton btNaytaTulokset = new JButton("Näytä tulokset");
+	private JButton btNaytaTulokset = new JButton("Näytä highscoret");
 
 	private JLabel lbPisteet = new JLabel("Pisteet: ");
 	private JLabel lbPisteidenLasku = new JLabel("" + pisteet);
@@ -65,7 +64,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		int j = 0;
 
 		// luodaan hedelmäoliot
-		for (i = 0; i < 18; i++) {
+		for (i = 0; i < 5; i++) {
 			// 2 x 18 erilaista ikonia
 			for (j = 0; j < 2; j++) {
 				ImageIcon hedelma = createImageIcon("images/rsz_kuva" + i
@@ -79,7 +78,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		Collections.shuffle(hedelmat);
 
 		// luodaan korttioliot
-		for (i = 0; i < 36; i++) {
+		for (i = 0; i < 10; i++) {
 			btKortti = new JButton();
 			btKortti.addActionListener(this);
 			// lisätään olio arraylistiin
@@ -106,11 +105,12 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		paToiminnot.add(btUusiPeli);
 		paToiminnot.add(btPoistuPelista);
 		// TOISTAISEKSI POIS KÄYTÖSTÄ
-		// paToiminnot.add(btNaytaTulokset);
+		paToiminnot.add(btNaytaTulokset);
 		sisalto.add(paToiminnot, BorderLayout.SOUTH);
 
 		btUusiPeli.addActionListener(this);
 		btPoistuPelista.addActionListener(this);
+		btNaytaTulokset.addActionListener(this);
 	}
 
 	// painettaessa btUusiPeli, nollataan tilanne
@@ -171,6 +171,12 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 			} else if (e.getSource().equals(btPoistuPelista)) {
 				System.exit(0);
 			} else if (e.getSource().equals(btNaytaTulokset)) {
+				if(dgNaytetty == false) {
+					System.out.println("Dg");
+					DgHighScore dgHighScore = new DgHighScore(this, "Highscores", true);
+					dgHighScore.setVisible(true);
+					dgNaytetty = true;
+				} 
 				// TODO: näytä tulokset tulokset.csv -tiedostosta
 			}
 		}
@@ -202,7 +208,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 			valinnat = 0;
 		}
 
-		if (oikeatValinnat == 18) {
+		if (oikeatValinnat == 10) {
 
 			// kysymysdialogi pelaajan nimeä varten
 			String nimi = (String) JOptionPane.showInputDialog(null, "Sait "
@@ -264,6 +270,16 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 			System.err.println("Kuvaa ei löytynyt: " + path);
 			return null;
 		}
+	}
+
+	
+	
+	public boolean isDgNaytetty() {
+		return dgNaytetty;
+	}
+
+	public void setDgNaytetty(boolean dgNaytetty) {
+		this.dgNaytetty = dgNaytetty;
 	}
 
 	public static void main(String[] args) {
