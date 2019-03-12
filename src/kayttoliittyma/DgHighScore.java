@@ -8,11 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+
+import model.Pelaaja;
+import tietokanta.Tietokanta;
 
 public class DgHighScore extends JDialog {
     
@@ -27,9 +31,17 @@ public class DgHighScore extends JDialog {
 		this.omistaja = omistaja;
         setTitle("Highscores");
         setLocation(300, 300);
-        setSize(100, 200);
+        setSize(400, 400);
     	Container sisalto = this.getContentPane();
 		sisalto.setLayout(new FlowLayout());
+		Tietokanta tietokanta = new Tietokanta();
+		ArrayList<Pelaaja> pelaajat = (ArrayList<Pelaaja>)tietokanta.listaaPisteet();
+		String tulokset = "";
+		for (int i = 0; i < pelaajat.size(); i++) {
+			tulokset = tulokset + (i+1) + ". " + pelaajat.get(i) + "\n";
+		}
+		
+		textArea.setText(tulokset);
 		sisalto.add(textArea);
 		sisalto.add(btSulje);
 		btSulje.addActionListener(new AlsSulje());
