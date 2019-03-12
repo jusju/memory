@@ -39,15 +39,6 @@ public class DgHighScore extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			PrintWriter kahva = null;
-			try {
-				System.out.println("Yritet‰‰n kirjoittaa.");
-				kahva = new PrintWriter(new FileWriter("scores.txt", false));
-				kahva.println("auki");
-				kahva.close();
-			} catch(Exception ex) {
-				
-			}
 			System.out.println("Sulje painettu!");
 			omistaja.setDgNaytetty(false);
 			tama.setVisible(false);

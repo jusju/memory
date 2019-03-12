@@ -207,6 +207,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 				if (dgNaytetty == false) {
 					System.out.println("Dg");
 					DgHighScore dgHighScore = new DgHighScore(this, "Highscores", true);
+					dgHighScore.setVisible(true);
 					dgNaytetty = true;
 				}
 			}
