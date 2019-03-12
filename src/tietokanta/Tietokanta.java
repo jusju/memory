@@ -31,20 +31,27 @@ public class Tietokanta {
 	}
 
 	public void talleta(String nickname, int score) {
-		luoYhteys();
 		try {
-			String sql = "INSERT INTO highscore(score, nickname) " + 
-					"VALUES(" + score + ",'" + nickname + "');";
+			Class.forName("org.sqlite.JDBC");
+			connection = DriverManager.getConnection("jdbc:sqlite:highscore.db");
+			System.out.println("SQLite DB connected");
+			Statement stmt = connection.createStatement();
+			String sql = "INSERT INTO highscore(score, nickname) " + "VALUES(" + score + ",'" + nickname + "');";
 			stmt.execute(sql);
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	public List<Pelaaja> listaaPisteet() {
-		luoYhteys();
 		List<Pelaaja> tulokset = new ArrayList<Pelaaja>();
 		try {
+			Class.forName("org.sqlite.JDBC");
+			connection = DriverManager.getConnection("jdbc:sqlite:highscore.db");
+			System.out.println("SQLite DB connected");
+			Statement stmt = connection.createStatement();
+
 			String sql = "SELECT * FROM highscore ORDER BY score DESC";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {

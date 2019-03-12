@@ -15,7 +15,7 @@ import java.util.TimerTask;
 import javax.swing.*;
 
 import persistointi.TalletaTulokset;
-
+import tietokanta.Tietokanta;
 import model.Pelaaja;
 
 /**
@@ -34,6 +34,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 	private int pisteet = 0;
 	private int oikeatValinnat = 0;
 	public boolean dgNaytetty = false;
+	private boolean highscoreNaytetty = false;
 
 	private ArrayList<JButton> kortit = new ArrayList<JButton>();
 	private ArrayList<ImageIcon> hedelmat = new ArrayList<ImageIcon>();
@@ -44,6 +45,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 	private JButton btEkaValittuKortti = null;
 	private JButton btTokaValittuKortti = null;
 	private JButton btNaytaTulokset = new JButton("Näytä highscoret");
+	private JButton btTallennaHighScore = new JButton("Tallenna highscore");
 
 	private JLabel lbPisteet = new JLabel("Pisteet: ");
 	private JLabel lbPisteidenLasku = new JLabel("" + pisteet);
@@ -119,11 +121,13 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		paToiminnot.add(btPoistuPelista);
 		// TOISTAISEKSI POIS KÄYTÖSTÄ
 		paToiminnot.add(btNaytaTulokset);
+		paToiminnot.add(btTallennaHighScore);
 		sisalto.add(paToiminnot, BorderLayout.SOUTH);
 
 		btUusiPeli.addActionListener(this);
 		btPoistuPelista.addActionListener(this);
 		btNaytaTulokset.addActionListener(this);
+		btTallennaHighScore.addActionListener(this);
 	}
 
 	// painettaessa btUusiPeli, nollataan tilanne
@@ -183,29 +187,31 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 				resetoiPeli();
 			} else if (e.getSource().equals(btPoistuPelista)) {
 				System.exit(0);
-			} else if (e.getSource().equals(btNaytaTulokset)) {
-				try {
-					Scanner scan = new Scanner(new File("scores.txt"));
-					while (scan.hasNext()) {
-						String rivi = scan.nextLine();
-						if (rivi.equals("auki")) {
-							System.out.println("Dg");
-							DgHighScore dgHighScore = new DgHighScore(this, "Highscores", true);
-							dgHighScore.setVisible(true);
-							PrintWriter kahva = null;
-							kahva = new PrintWriter(new FileWriter("scores.txt", false));
-							kahva.println("kiinni");
-							kahva.close();
+			} else if (e.getSource().equals(btTallennaHighScore)) {
+				if (highscoreNaytetty == false) {
+					// kysymysdialogi pelaajan nimeä varten
+					String nimi = (String) JOptionPane.showInputDialog(null,
+							"Sait " + pisteet + " pistettä.\nAnna nimesi", "Peli päättyi", JOptionPane.QUESTION_MESSAGE,
+							null, null, "");
 
-						}
-					}
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Pelaaja pelaaja = new Pelaaja();
+					pelaaja.setNickname(nimi);
+					pelaaja.setPisteet(pisteet);
+					TalletaTulokset tulokset = new TalletaTulokset();
+					Tietokanta tietokanta = new Tietokanta();
+					tietokanta.talleta(nimi, pisteet);
+					tulokset.talletaTulos(pelaaja);
+					highscoreNaytetty = true;
 				}
-				// TODO: näytä tulokset tulokset.csv -tiedostosta
+			} else if (e.getSource().equals(btNaytaTulokset)) {
+				if (dgNaytetty == false) {
+					System.out.println("Dg");
+					DgHighScore dgHighScore = new DgHighScore(this, "Highscores", true);
+					dgNaytetty = true;
+				}
 			}
+
+			// TODO: näytä tulokset tulokset.csv -tiedostosta
 		}
 
 		if (valinnat == 2) {
