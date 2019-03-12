@@ -3,8 +3,13 @@ package kayttoliittyma;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.*;
@@ -28,7 +33,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 	private int valinnat = 0;
 	private int pisteet = 0;
 	private int oikeatValinnat = 0;
-	public static boolean dgNaytetty = false;
+	public boolean dgNaytetty = false;
 
 	private ArrayList<JButton> kortit = new ArrayList<JButton>();
 	private ArrayList<ImageIcon> hedelmat = new ArrayList<ImageIcon>();
@@ -51,6 +56,15 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 
 	public FrMuistipeli() {
 
+		PrintWriter kahva = null;
+		try {
+			kahva = new PrintWriter(new FileWriter("scores.txt", false));
+			kahva.println("auki");
+			kahva.close();
+		} catch (Exception ex) {
+
+		}
+
 		setTitle("Muistipeli");
 		setSize(600, 600);
 		setLocation(100, 100);
@@ -59,7 +73,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 
 		lbPisteet.setFont(new Font("sansserif", Font.BOLD, 22));
 		lbPisteidenLasku.setFont(new Font("sansserif", Font.BOLD, 22));
-		
+
 		int i = 0;
 		int j = 0;
 
@@ -67,8 +81,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		for (i = 0; i < 5; i++) {
 			// 2 x 18 erilaista ikonia
 			for (j = 0; j < 2; j++) {
-				ImageIcon hedelma = createImageIcon("images/rsz_kuva" + i
-						+ ".gif");
+				ImageIcon hedelma = createImageIcon("images/rsz_kuva" + i + ".gif");
 				// lisätään olio arraylistiin
 				hedelmat.add(hedelma);
 			}
@@ -92,7 +105,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 	private void asetteleKomponentit() {
 		Container sisalto = this.getContentPane();
 		sisalto.setLayout(new BorderLayout());
-		
+
 		paPisteet.add(lbPisteet);
 		paPisteet.add(lbPisteidenLasku);
 		sisalto.add(paPisteet, BorderLayout.NORTH);
@@ -122,7 +135,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 
 		// sekoitetaan hedelmat uudemman kerran
 		Collections.shuffle(hedelmat);
-		
+
 		// nollaukset
 		piilotaKortit();
 		valinnat = 0;
@@ -171,12 +184,26 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 			} else if (e.getSource().equals(btPoistuPelista)) {
 				System.exit(0);
 			} else if (e.getSource().equals(btNaytaTulokset)) {
-				if(dgNaytetty == false) {
-					System.out.println("Dg");
-					DgHighScore dgHighScore = new DgHighScore(this, "Highscores", true);
-					dgHighScore.setVisible(true);
-					dgNaytetty = true;
-				} 
+				try {
+					Scanner scan = new Scanner(new File("scores.txt"));
+					while (scan.hasNext()) {
+						String rivi = scan.nextLine();
+						if (rivi.equals("auki")) {
+							System.out.println("Dg");
+							DgHighScore dgHighScore = new DgHighScore(this, "Highscores", true);
+							dgHighScore.setVisible(true);
+							PrintWriter kahva = null;
+							kahva = new PrintWriter(new FileWriter("scores.txt", false));
+							kahva.println("kiinni");
+							kahva.close();
+
+						}
+					}
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				// TODO: näytä tulokset tulokset.csv -tiedostosta
 			}
 		}
@@ -184,8 +211,7 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		if (valinnat == 2) {
 
 			// vertaillaan muistiin otettuja kortteja
-			if (!btEkaValittuKortti.getIcon().toString().equals(
-					btTokaValittuKortti.getIcon().toString())) {
+			if (!btEkaValittuKortti.getIcon().toString().equals(btTokaValittuKortti.getIcon().toString())) {
 				// pidetään kortit näkyvillä yhden sekunnin ajan
 				uusiViive = new Viive(1);
 				// jos kortit eivät täsmää, vähennetään pisteitä
@@ -211,9 +237,8 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		if (oikeatValinnat == 10) {
 
 			// kysymysdialogi pelaajan nimeä varten
-			String nimi = (String) JOptionPane.showInputDialog(null, "Sait "
-					+ pisteet + " pistettä.\nAnna nimesi", "Peli päättyi",
-					JOptionPane.QUESTION_MESSAGE, null, null, "");
+			String nimi = (String) JOptionPane.showInputDialog(null, "Sait " + pisteet + " pistettä.\nAnna nimesi",
+					"Peli päättyi", JOptionPane.QUESTION_MESSAGE, null, null, "");
 
 			Pelaaja pelaaja = new Pelaaja();
 			pelaaja.setNickname(nimi);
@@ -272,14 +297,12 @@ public class FrMuistipeli extends JFrame implements ActionListener {
 		}
 	}
 
-	
-	
 	public boolean isDgNaytetty() {
 		return dgNaytetty;
 	}
 
-	public void setDgNaytetty(boolean dgNaytetty) {
-		this.dgNaytetty = dgNaytetty;
+	public void setDgNaytetty(boolean dgNaytettyArvo) {
+		dgNaytetty = dgNaytettyArvo;
 	}
 
 	public static void main(String[] args) {
