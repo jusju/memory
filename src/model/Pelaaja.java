@@ -27,7 +27,7 @@ public class Pelaaja {
 	}
 	@Override
 	public String toString() {
-		return "Pelaaja [pisteet=" + pisteet + ", nickname=" + nickname + "]";
+		return nickname + ", pisteet: " + pisteet;
 	}
 
 }
