@@ -52,7 +52,7 @@ public class Tietokanta {
 			System.out.println("SQLite DB connected");
 			Statement stmt = connection.createStatement();
 
-			String sql = "SELECT * FROM highscore ORDER BY score DESC";
+			String sql = "SELECT * FROM highscore ORDER BY score DESC LIMIT 10";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				int score = rs.getInt("score");
